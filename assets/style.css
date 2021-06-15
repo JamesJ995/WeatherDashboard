@@ -1,5 +1,15 @@
+body {
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 #titleText {
-  background-color: blueviolet;
+  background: rgb(7, 77, 172);
+  background: linear-gradient(
+    90deg,
+    rgba(7, 77, 172, 1) 0%,
+    rgba(73, 0, 102, 1) 93%,
+    rgba(81, 0, 124, 1) 100%
+  );
   color: white;
   padding: 5px;
 }
@@ -14,5 +24,15 @@
 }
 
 .card {
-    background-color: grey;
+  background-color: grey;
+}
+
+#searchButton {
+  background: rgb(7, 77, 172);
+  background: linear-gradient(
+    90deg,
+    rgba(7, 77, 172, 1) 0%,
+    rgba(73, 0, 102, 1) 93%,
+    rgba(81, 0, 124, 1) 100%
+  );
 }
