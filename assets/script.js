@@ -11,14 +11,12 @@ var getWeatherData = function (lat, long, city) {
     long +
     "&units=imperial" +
     "&appid=dd0131dd813be694ba34a4c045ffbbfc";
-  console.log(apiUrl);
 
   fetch(apiUrl).then(function (response) {
     if (response.ok) {
       response.json().then(function (data) {
         displayTodayWeather(data, city);
         displayFiveDay(data);
-        console.log(data);
       });
     } else {
       alert("Error: " + response.statusText);
@@ -93,11 +91,12 @@ var displayFiveDay = function (fetchResults) {
 };
 
 var makeLocalStorageButton = function (city) {
-    var newBtn = document.createElement('button');
-    newBtn.id = city;
-    newBtn.textContent = city;
-    savedSearch.appendChild(newBtn);
-}
+  var newBtn = document.createElement("button");
+  newBtn.id = city;
+  $(newBtn).addClass("btn btn-default btn-block btn-warning m-2");
+  newBtn.textContent = city;
+  savedSearch.appendChild(newBtn);
+};
 
 //google maps api geocoder to get latitude and longitude for the given city on search button click. runs the getWeatherData function with the generated lat and long.
 $("#searchButton").click(function () {
@@ -114,7 +113,12 @@ $("#searchButton").click(function () {
     } else {
       alert("Something is wrong " + status);
     }
-    localStorage.setItem(city, address);
+    if (address.length > 1) {
+      localStorage.setItem(city, city);
+    }
+    if (localStorage.length > 5) {
+      localStorage.removeItem(localStorage.key(0));
+    }
   });
 });
 
@@ -133,6 +137,25 @@ savedSearch.addEventListener("click", function (event) {
     } else {
       alert("Something is wrong " + status);
     }
-    localStorage.setItem(city, address);
+    localStorage.setItem(city, city);
+    if (localStorage.length > 5) {
+      localStorage.removeItem(localStorage.key(0));
+    }
   });
 });
+
+var initLocalStorage = function () {
+  for (var i = 0; i < localStorage.length; i++) {
+    var cityStorage = localStorage.getItem(localStorage.key(i));
+    var newBtn = document.createElement("button");
+    newBtn.id = cityStorage;
+    $(newBtn).addClass("btn btn-default btn-block btn-warning m-2");
+    newBtn.textContent = cityStorage;
+    savedSearch.appendChild(newBtn);
+  }
+  if (localStorage.length > 5) {
+    localStorage.removeItem(localStorage.key(0));
+  }
+};
+
+initLocalStorage();
