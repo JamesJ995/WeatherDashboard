@@ -1,5 +1,6 @@
 var srchBtn = document.querySelector("#searchButton");
 var todayEl = document.querySelector("#todayWeather");
+var savedSearch = document.querySelector("#savedSearches");
 
 //API call to openweather given the lat and long of the entered city. runs displayWeather function with API return object.
 var getWeatherData = function (lat, long, city) {
@@ -52,6 +53,8 @@ var displayTodayWeather = function (fetchResults, city) {
   var displayTodayUVI = document.createElement("h4");
   displayTodayUVI.textContent = "UV Index: " + todayUVI;
   todayEl.appendChild(displayTodayUVI);
+
+  makeLocalStorageButton(city);
 };
 
 //Fill the 5-day forecast cards with weather data over the next five days.
@@ -89,6 +92,13 @@ var displayFiveDay = function (fetchResults) {
   }
 };
 
+var makeLocalStorageButton = function (city) {
+    var newBtn = document.createElement('button');
+    newBtn.id = city;
+    newBtn.textContent = city;
+    savedSearch.appendChild(newBtn);
+}
+
 //google maps api geocoder to get latitude and longitude for the given city on search button click. runs the getWeatherData function with the generated lat and long.
 $("#searchButton").click(function () {
   var geocoder = new google.maps.Geocoder();
@@ -104,5 +114,25 @@ $("#searchButton").click(function () {
     } else {
       alert("Something is wrong " + status);
     }
+    localStorage.setItem(city, address);
+  });
+});
+
+savedSearch.addEventListener("click", function (event) {
+  var savedCity = event.target.id;
+  var geocoder = new google.maps.Geocoder();
+  var address = savedCity;
+  geocoder.geocode({ address: address }, function (results, status) {
+    if (status == google.maps.GeocoderStatus.OK) {
+      var lat = results[0].geometry.location.lat();
+      var long = results[0].geometry.location.lng();
+      var city = results[0].formatted_address;
+      lat = Math.round(lat);
+      long = Math.round(long);
+      getWeatherData(lat, long, city);
+    } else {
+      alert("Something is wrong " + status);
+    }
+    localStorage.setItem(city, address);
   });
 });
