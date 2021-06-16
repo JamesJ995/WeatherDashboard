@@ -1,5 +1,5 @@
 body {
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 #titleText {
@@ -24,7 +24,14 @@ body {
 }
 
 .card {
-  background-color: grey;
+  background: rgb(7, 77, 172);
+  background: linear-gradient(
+    90deg,
+    rgba(7, 77, 172, 1) 0%,
+    rgba(73, 0, 102, 1) 93%,
+    rgba(81, 0, 124, 1) 100%
+  );
+  color: cornsilk;
 }
 
 #searchButton {

@@ -25,39 +25,69 @@ var getWeatherData = function (lat, long, city) {
   });
 };
 
-//update html and css with weather data.
+//update html and css with weather data for the given city at the current time and date.
 var displayTodayWeather = function (fetchResults, city) {
-    todayEl.textContent = "";
+  todayEl.textContent = "";
 
-    var displayCity = document.createElement('h2');
-    displayCity.textContent = city + " " + moment().format('(M/D/Y)');
-    todayEl.appendChild(displayCity);
+  var displayCity = document.createElement("h2");
+  displayCity.textContent = city + " " + moment().format("(M/D/Y)");
+  todayEl.appendChild(displayCity);
 
-    var todayTemp = fetchResults.current.temp;
-    var displayTodayTemp = document.createElement('h4');
-    displayTodayTemp.textContent = "Temp: " + todayTemp + "F";
-    todayEl.appendChild(displayTodayTemp);
+  var todayTemp = fetchResults.current.temp;
+  var displayTodayTemp = document.createElement("h4");
+  displayTodayTemp.textContent = "Temp: " + todayTemp + "F";
+  todayEl.appendChild(displayTodayTemp);
 
-    var todayWind = fetchResults.current.wind_speed;
-    var displayTodayWind = document.createElement('h4');
-    displayTodayWind.textContent = "Wind Speed: " + todayWind + " MPH";
-    todayEl.appendChild(displayTodayWind);
+  var todayWind = fetchResults.current.wind_speed;
+  var displayTodayWind = document.createElement("h4");
+  displayTodayWind.textContent = "Wind Speed: " + todayWind + " MPH";
+  todayEl.appendChild(displayTodayWind);
 
-    var todayHum = fetchResults.current.humidity;
-    var displayTodayHum = document.createElement('h4');
-    displayTodayHum.textContent = "Humidity: " + todayHum + "%";
-    todayEl.appendChild(displayTodayHum);
+  var todayHum = fetchResults.current.humidity;
+  var displayTodayHum = document.createElement("h4");
+  displayTodayHum.textContent = "Humidity: " + todayHum + "%";
+  todayEl.appendChild(displayTodayHum);
 
-    var todayUVI = fetchResults.current.uvi;
-    var displayTodayUVI = document.createElement('h4');
-    displayTodayUVI.textContent = "UV Index: " + todayUVI;
-    todayEl.appendChild(displayTodayUVI);
-
+  var todayUVI = fetchResults.current.uvi;
+  var displayTodayUVI = document.createElement("h4");
+  displayTodayUVI.textContent = "UV Index: " + todayUVI;
+  todayEl.appendChild(displayTodayUVI);
 };
 
+//Fill the 5-day forecast cards with weather data over the next five days.
 var displayFiveDay = function (fetchResults) {
-    
-}
+  startdate = moment().format("(M/D/Y)");
+  for (var i = 1; i < 6; i++) {
+    var dayCard = document.getElementById("day" + i);
+    dayCard.textContent = "";
+  }
+  for (var i = 1; i < 6; i++) {
+    var new_date = moment(startdate, "(M/D/Y)").add(i, "days");
+    var day = new_date.format("D/");
+    var month = new_date.format("M/");
+    var year = new_date.format("Y");
+
+    var dayCard = document.getElementById("day" + i);
+    var displayDate = document.createElement("h4");
+    displayDate.textContent = month + day + year;
+    dayCard.appendChild(displayDate);
+
+    var todayTemp = fetchResults.daily[i].temp.day;
+    var displayTodayTemp = document.createElement("h5");
+    displayTodayTemp.textContent = "Temp: " + todayTemp + "F";
+    dayCard.appendChild(displayTodayTemp);
+
+    var todayWind = fetchResults.daily[i].wind_speed;
+    var displayTodayWind = document.createElement("h5");
+    displayTodayWind.textContent = "Wind Speed: " + todayWind + " MPH";
+    dayCard.appendChild(displayTodayWind);
+
+    var todayHUM = fetchResults.daily[i].humidity;
+    var displayTodayHUM = document.createElement("h5");
+    displayTodayHUM.textContent = "Humidity: " + todayHUM + "%";
+    dayCard.appendChild(displayTodayHUM);
+  }
+};
 
 //google maps api geocoder to get latitude and longitude for the given city on search button click. runs the getWeatherData function with the generated lat and long.
 $("#searchButton").click(function () {
